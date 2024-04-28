@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "./Header";
+import FormValidator from "../Utils/FormValidator";
 import { useState } from "react";
+import { toast } from "react-toastify";
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
 
@@ -44,21 +46,43 @@ const Login = () => {
     }));
   };
 
-  const onSubmitHandeler = (e) => {
-    e.preventDefault();
-    console.log(state.email.value);
-    console.log(state.password.value);
-    console.log(state.name.value);
+  const onFormHandeler = (e) => {
+    const msg = FormValidator(state.email.value, state.password.value);
+    if (state.email.value === "")
+      toast.warning("Empty Email Field !", {
+        className: "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] ",
+      });
+    else if (state.password.value === "")
+      toast.warning("Empty Password Field !", {
+        className: "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] ",
+      });
+    else {
+      if (msg === "email")
+        toast.error("Email ID  Not valid", {
+          className:
+            "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] bg-opacity-70 ",
+        });
+      else if (msg === "password") {
+        toast.error("Password  Not valid", {
+          className:
+            "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
+        });
+      }
+    }
   };
   return (
     <div className="relative w-screen min-h-screen  bg-login-bg bg-center bg-cover">
       <div className="absolute inset-0 bg-gradient-to-br from-black to-black opacity-50"></div>
-      <main className="relative z-10">
+      <main className="relative z-10 mb-36 ">
         <Header className="relative  z-10" />
       </main>
 
-      <div className="form relative z-10 top-[150px] mt-[100px] left-1/2 w-[400px] -translate-x-[50%] -translate-y-[50%] p-16 bg-black rounded-lg max-w-[70%] bg-opacity-70 text-white">
-        <form action="" className="flex flex-col  gap-5  ">
+      <div className="form relative z-10 top-[150px] mt-[100px] left-1/2 w-[400px]  -translate-x-[50%] -translate-y-[50%] sm:p-16 p-10 bg-black rounded-lg sm:max-w-[70%] max-w-[90%] bg-opacity-70 text-white">
+        <form
+          action=""
+          className="flex flex-col  gap-5  "
+          onSubmit={(e) => e.preventDefault()}
+        >
           <h2 className="text-white font-bold text-4xl">
             {" "}
             {isSignIn ? "Sign In" : "Sign Up"}
@@ -129,7 +153,7 @@ const Login = () => {
 
           <button
             className="bg-btn-red px-4 py-2 rounded-md hover:bg-red-800 text-white text-xl "
-            onClick={(e) => onSubmitHandeler(e)}
+            onClick={onFormHandeler}
           >
             {isSignIn ? "Sign In" : "Sign Up"}
           </button>

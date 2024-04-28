@@ -2,6 +2,12 @@
 
 - Create React App
   -Configure Tailwind
+  -Header
+  -Routing of App
+  -Login Form
+  -Sign Up Form
+  -Form Validation
+  -useRef Hooks
 
 # Features
 - Login/SignUp

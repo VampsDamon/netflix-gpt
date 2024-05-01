@@ -8,6 +8,10 @@
   -Sign Up Form
   -Form Validation
   -useRef Hooks
+  -Firebase Setup
+  -Deployment app on Firebase
+  -Crete Sign Up and Login
+  -Create Redux Store with user Slice
 
 # Features
 - Login/SignUp

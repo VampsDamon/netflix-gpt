@@ -1,13 +1,16 @@
+import { useDispatch } from "react-redux";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// import { auth } from "../Utils/firebase";
+
+
 
 class AuthService {
   auth;
@@ -38,10 +41,8 @@ class AuthService {
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      toast.error(errorCode + "  " + errorMessage, {
-        className:
-          "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
-      });
+      console.log(errorMessage)
+      
     }
   }
 
@@ -53,7 +54,8 @@ class AuthService {
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      toast.error(errorCode + "  " + errorMessage, {
+      console.log(errorMessage)
+      toast.error("Wrong Email ID & Password", {
         className:
           "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
       });
@@ -69,6 +71,7 @@ class AuthService {
       console.log("Error in SignOut", error);
     }
   }
+
 }
 const authService = new AuthService();
 export default authService;

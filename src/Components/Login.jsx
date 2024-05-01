@@ -3,6 +3,11 @@ import Header from "./Header";
 import FormValidator from "../Utils/FormValidator";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ReactComponent as ShowIcon } from '../Images/eye-password-show-svgrepo-com(1).svg'; 
+import { ReactComponent as HideIcon } from '../Images/eye-password-hide-svgrepo-com(1).svg'; 
+
+
 
 
 import authService from "../Utils/FirebaseAuth";
@@ -11,12 +16,21 @@ import authService from "../Utils/FirebaseAuth";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+  const navigate = useNavigate();
 
   const [state, setState] = useState({
     name: { isFocused: false, hasContent: false, value: "" },
     email: { isFocused: false, hasContent: false, value: "" },
     password: { isFocused: false, hasContent: false, value: "" },
   });
+
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+
 
   const handleFocus = (field) => {
     setState((prevState) => ({
@@ -55,31 +69,35 @@ const Login = () => {
   const onFormHandeler = (e) => {
     const msg = FormValidator(state.email.value, state.password.value);
     if (state.email.value === "" || state.password.value === "")
-      toast.warning("Empty Email Field !", {
+      toast.warning("Empty  Fields !", {
         className: "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] ",
       });
     else {
       if (msg === "email")
-        toast.error("Email ID  Not valid", {
+        toast.warning("Invalid email address, please check and try again.", {
           className:
             "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] bg-opacity-70 ",
         });
       else if (msg === "password") {
-        toast.error("Password  Not valid", {
-          className:
-            "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
-        });
+        toast.warning(
+          "Password must be 8+ characters with uppercase, lowercase, and a special symbol.",
+          {
+            className:
+              "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
+          }
+        );
       }
     }
     if (msg) return;
     if (!isSignIn) {
       authService
         .signUp(state.email.value, state.password.value, "shahid")
-        .then((user) => console.log(user));
+        .then((user) => navigate("/browse"));
     }
     else{
-      authService.login(state.email.value, state.password.value)
-       .then((user)=>console.log(user));
+      authService
+        .login(state.email.value, state.password.value)
+        .then((user) => {if(user) navigate("/browse")});
     }
   };
   return (
@@ -142,7 +160,7 @@ const Login = () => {
             </label>
           </div>
 
-          <div className="relative w-full">
+          {/* <div className="relative w-full">
             <input
               type="password"
               value={state.password.value}
@@ -161,6 +179,35 @@ const Login = () => {
             >
               Password
             </label>
+          </div> */}
+
+          <div className="relative w-full">
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              value={state.password.value}
+              onFocus={() => handleFocus("password")}
+              onBlur={(e) => handleBlur("password", e)}
+              onChange={(e) => handleChange("password", e)}
+              className="px-4 py-3 my-2 rounded-md bg-slate-800 bg-opacity-55 outline-none border border-gray-500 w-full h-[50px]"
+            />
+
+            <label
+              className={`absolute pointer-events-none top-0 left-0 px-4 py-2 transition-all duration-200 ease-in-out ${
+                state.password.isFocused || state.password.hasContent
+                  ? "-mt-2 text-xs font-bold"
+                  : "mt-3 text-base"
+              }`}
+            >
+              Password
+            </label>
+
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 focus:outline-none"
+            >
+              {isPasswordVisible ? <HideIcon /> : <ShowIcon />}
+            </button>
           </div>
 
           <button

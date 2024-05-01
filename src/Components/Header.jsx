@@ -10,11 +10,11 @@ const Header = () => {
           alt="logo"
         />
       </div>
-      <div className="text-white flex gap-5 list-none uppercase justify-center items-center font-bold ">
+      {/* <div className="text-white flex gap-5 list-none uppercase justify-center items-center font-bold ">
         <li>Home</li>
         <li>Login</li>
         <li>SignUp</li>
-      </div>
+      </div> */}
     </div>
   );
 };

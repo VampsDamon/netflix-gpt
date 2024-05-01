@@ -3,6 +3,12 @@ import Header from "./Header";
 import FormValidator from "../Utils/FormValidator";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
+
+import authService from "../Utils/FirebaseAuth";
+
+
+
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
 
@@ -48,12 +54,8 @@ const Login = () => {
 
   const onFormHandeler = (e) => {
     const msg = FormValidator(state.email.value, state.password.value);
-    if (state.email.value === "")
+    if (state.email.value === "" || state.password.value === "")
       toast.warning("Empty Email Field !", {
-        className: "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] ",
-      });
-    else if (state.password.value === "")
-      toast.warning("Empty Password Field !", {
         className: "w-[70%] sm:w-[100%] left-[100px] sm:left-[0px] top-[10px] ",
       });
     else {
@@ -68,6 +70,16 @@ const Login = () => {
             "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
         });
       }
+    }
+    if (msg) return;
+    if (!isSignIn) {
+      authService
+        .signUp(state.email.value, state.password.value, "shahid")
+        .then((user) => console.log(user));
+    }
+    else{
+      authService.login(state.email.value, state.password.value)
+       .then((user)=>console.log(user));
     }
   };
   return (

@@ -4,19 +4,22 @@ import FormValidator from "../Utils/FormValidator";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as ShowIcon } from '../Images/eye-password-show-svgrepo-com(1).svg'; 
-import { ReactComponent as HideIcon } from '../Images/eye-password-hide-svgrepo-com(1).svg'; 
+import { ReactComponent as ShowIcon } from "../Images/eye-password-show-svgrepo-com(1).svg";
+import { ReactComponent as HideIcon } from "../Images/eye-password-hide-svgrepo-com(1).svg";
+import { useDispatch } from "react-redux";
+import { addUser } from "../Utils/userSlice";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
-
-
-
-import authService from "../Utils/FirebaseAuth";
-
-
+import auth from "../Utils/FirebaseAuth";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [state, setState] = useState({
     name: { isFocused: false, hasContent: false, value: "" },
@@ -24,13 +27,11 @@ const Login = () => {
     password: { isFocused: false, hasContent: false, value: "" },
   });
 
-
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
-
 
   const handleFocus = (field) => {
     setState((prevState) => ({
@@ -90,14 +91,57 @@ const Login = () => {
     }
     if (msg) return;
     if (!isSignIn) {
-      authService
-        .signUp(state.email.value, state.password.value, "shahid")
-        .then((user) => navigate("/browse"));
-    }
-    else{
-      authService
-        .login(state.email.value, state.password.value)
-        .then((user) => {if(user) navigate("/browse")});
+      createUserWithEmailAndPassword(
+        auth,
+        state.email.value,
+        state.password.value
+      )
+        .then((userCredential) => {
+          updateProfile(auth.currentUser, {
+            displayName: state.name.value,
+            photoURL: "https://avatars.githubusercontent.com/u/91468616?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              console.log("Error in Updating Profile");
+            });
+
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage, errorCode);
+          toast.warning(errorMessage, {
+            className:
+              "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
+          });
+        });
+    } else {
+      signInWithEmailAndPassword(auth, state.email.value, state.password.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage, errorCode);
+          toast.warning("Invalid user ID and Password", {
+            className:
+              "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
+          });
+        });
     }
   };
   return (
@@ -159,27 +203,6 @@ const Login = () => {
               Email
             </label>
           </div>
-
-          {/* <div className="relative w-full">
-            <input
-              type="password"
-              value={state.password.value}
-              onFocus={() => handleFocus("password")}
-              onBlur={(e) => handleBlur("password", e)}
-              onChange={(e) => handleChange("password", e)}
-              className={`px-4 py-3 my-2 rounded-md bg-slate-800 bg-opacity-55 outline-none border border-gray-500
-              w-full h-[50px]  `}
-            />
-            <label
-              className={`absolute pointer-events-none top-0 left-0 px-4 py-2 transition-all duration-200 ease-in-out ${
-                state.password.isFocused || state.password.hasContent
-                  ? "-mt-2 text-xs font-bold"
-                  : "mt-3 text-base"
-              }`}
-            >
-              Password
-            </label>
-          </div> */}
 
           <div className="relative w-full">
             <input

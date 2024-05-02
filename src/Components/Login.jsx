@@ -115,13 +115,9 @@ const Login = () => {
             .catch((error) => {
               console.log("Error in Updating Profile");
             });
-
-          navigate("/browse");
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorMessage, errorCode);
           toast.warning(errorMessage, {
             className:
               "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",
@@ -129,14 +125,8 @@ const Login = () => {
         });
     } else {
       signInWithEmailAndPassword(auth, state.email.value, state.password.value)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          navigate("/browse");
-        })
+        .then((userCredential) => {})
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorMessage, errorCode);
           toast.warning("Invalid user ID and Password", {
             className:
               "w-[70%] sm:w-[100%] sm:left-[0px] left-[100px] sm:left-[0px] top-[10px] ",

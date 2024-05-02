@@ -8,6 +8,7 @@ import { ReactComponent as ShowIcon } from "../Images/eye-password-show-svgrepo-
 import { ReactComponent as HideIcon } from "../Images/eye-password-hide-svgrepo-com(1).svg";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Utils/userSlice";
+import { USER_AVTAR } from "../Utils/constant";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -99,7 +100,7 @@ const Login = () => {
         .then((userCredential) => {
           updateProfile(auth.currentUser, {
             displayName: state.name.value,
-            photoURL: "https://avatars.githubusercontent.com/u/91468616?v=4",
+            photoURL: USER_AVTAR,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;

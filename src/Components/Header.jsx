@@ -43,7 +43,11 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="flex  justify-between  px-4 py-2 sm:py-0 w-[100%] bg-black  ">
+    <div
+      className={`flex z-30  px-4 py-2 sm:py-0 w-[100%]    ${
+        PUser ? "absolute z-10 justify-between bg-gradient-to-b from-black ": "justify-center md:justify-start"
+      } `}
+    >
       <div className="logo ">
         <img className="w-40 md:w-48 mx-auto " src={LOGO} alt="logo" />
       </div>

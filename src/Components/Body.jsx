@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Browse from './Browse'
+import Position from './Position';
 
 
 
@@ -30,6 +31,7 @@ const Body = () => {
        <>
          <Route path="/" element={<Login />} />
          <Route path="/browse" element={<Browse />} />
+         <Route path="/position" element={<Position />} />
        </>
      )
    );

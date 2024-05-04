@@ -12,6 +12,8 @@
   -Deployment app on Firebase
   -Crete Sign Up and Login
   -Create Redux Store with user Slice
+  -Implement SignOut
+  -Create Redux store 
 
 # Features
 - Login/SignUp

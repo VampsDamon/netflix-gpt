@@ -9,10 +9,10 @@ const MainContainer = () => {
     if(!movies)return null;
 
     // const randomeMovie = movies[Math.floor(Math.random() * movies.length)];
-    const randomeMovie = movies[17];
+    const randomeMovie = movies[6];
 
     const { original_title, overview,id } = randomeMovie;
-   console.log(randomeMovie)
+   
   return (
     <div className="relative top-0">
       <VideoTitle

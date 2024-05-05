@@ -7,9 +7,12 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { addUser, removeUser } from "../Utils/userSlice";
 import { LOGO } from "../Utils/constant";
 import { useParams } from "react-router-dom";
+import { showgptToggle } from "../Utils/gptSlice";
+import { lang } from "../Utils/constant";
+import { addLang } from "../Utils/configureSlice";
 
 const Header = () => {
-  const {movieID}=useParams();
+  const { movieID } = useParams();
   const PUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,7 +38,7 @@ const Header = () => {
           })
         );
         if (location.pathname === "/") navigate("/browse");
-        else if (user && location.pathname === "/browse/"+ movieID)
+        else if (user && location.pathname === "/browse/" + movieID)
           navigate("/browse/" + movieID);
       } else {
         dispatch(removeUser());
@@ -47,13 +50,15 @@ const Header = () => {
     return () => unsubscribe();
   }, [location.pathname]);
 
+  const gptbtnToggle = () => {
+    dispatch(showgptToggle());
+  };
 
+  const showGPT = useSelector((store) => store.gpt.gptToggle);
 
-  
-
-
-
-
+  const hnadelLanguageSelector=(e)=>{
+    dispatch(addLang(e.target.value))
+  }
 
   return (
     <div
@@ -68,6 +73,32 @@ const Header = () => {
       </div>
       {PUser && (
         <div className="text-white flex gap-5 list-none uppercase justify-center items-center font-bold ">
+          {showGPT && (
+            <select
+              name=""
+              id=""
+              className="bg-gray-700 p-2 rounded-lg shadow-lg"
+              onClick={hnadelLanguageSelector}
+            >
+              {lang.map((ln) => (
+                <option
+                  className="p-1 rounded-md m-1"
+                  key={ln.key}
+                  value={ln.key}
+                >
+                  {ln.language}
+                </option>
+              ))}
+            </select>
+          )}
+
+          <button
+            className="bg-btn-red p-2 uppercase  rounded-lg"
+            onClick={gptbtnToggle}
+          >
+            {!showGPT ? "Show " : "Hide "}
+            GPT
+          </button>
           <div className="">
             <img
               className="w-12 rounded-md  object-cover object-center"

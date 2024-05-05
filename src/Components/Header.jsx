@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect } from "react";
 import auth from "../Utils/FirebaseAuth";
 import { useNavigate } from "react-router-dom";
@@ -5,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { addUser, removeUser } from "../Utils/userSlice";
 import { LOGO } from "../Utils/constant";
+import { useParams } from "react-router-dom";
 
 const Header = () => {
+  const {movieID}=useParams();
   const PUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +23,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const unsubscribe=onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName, photoURL } = user;
         dispatch(
@@ -31,7 +34,9 @@ const Header = () => {
             photoURL: photoURL,
           })
         );
-        navigate("/browse");
+        if (location.pathname === "/") navigate("/browse");
+        else if (user && location.pathname === "/browse/"+ movieID)
+          navigate("/browse/" + movieID);
       } else {
         dispatch(removeUser());
         navigate("/");
@@ -39,13 +44,23 @@ const Header = () => {
     });
 
     //+ Unsubscribe the onAuthchnage evnet
-    return ()=>unsubscribe();
-  }, []);
+    return () => unsubscribe();
+  }, [location.pathname]);
+
+
+
+  
+
+
+
+
 
   return (
     <div
-      className={`flex z-30  px-4 py-2 sm:py-0 w-[100%]    ${
-        PUser ? "absolute z-10 justify-between bg-gradient-to-b from-black ": "justify-center md:justify-start"
+      className={`flex z-30  px-4 py-2 sm:py-0 w-[100%]  absolute  ${
+        PUser
+          ? " z-10 justify-between bg-gradient-to-b from-black "
+          : "justify-center md:justify-start"
       } `}
     >
       <div className="logo ">

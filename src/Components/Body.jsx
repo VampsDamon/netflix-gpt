@@ -8,6 +8,8 @@ import { ToastContainer } from "react-toastify";
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Browse from './Browse'
 import Position from './Position';
+import MoviePage from './MoviePage';
+import AppLayout from './AppLayout';
 
 
 
@@ -29,9 +31,16 @@ const Body = () => {
    const appRouter2 = createBrowserRouter(
      createRoutesFromElements(
        <>
-         <Route path="/" element={<Login />} />
-         <Route path="/browse" element={<Browse />} />
-         <Route path="/position" element={<Position />} />
+         {/* <Route path="/" element={<Login />} />
+         <Route path="/browse" element={<Browse />}/ >
+         <Route path="/browse/:movieID" element={<MoviePage />} />
+         <Route path="/position" element={<Position />} /> */}
+         <Route path="/" element={<AppLayout />} >
+            <Route index element={<Login />}/>
+            <Route path="/browse" element={<Browse />}/ >
+            <Route path="/browse/:movieID" element={<MoviePage />} />
+            <Route path="/position" element={<Position />} />
+         </Route>
        </>
      )
    );

@@ -31,7 +31,7 @@ const MovieList = ({ title, moviesList }) => {
             className="flex overflow-x-scroll whitespace-nowrap scrollbar-none"
           >
             {moviesList.map((movie) => (
-              <MoviesCard imgCDN={movie?.poster_path} />
+              <MoviesCard imgCDN={movie?.poster_path} id={movie?.id} />
             ))}
           </div>
         </div>

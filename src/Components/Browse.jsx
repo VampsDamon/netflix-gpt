@@ -16,7 +16,7 @@ useUpComingMovies();
 
   return (
     <div className="relative">
-      <Header  />
+      {/* <Header  /> */}
       <MainContainer />
       <SecondaryContainer/>
       {/* 

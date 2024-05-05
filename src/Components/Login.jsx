@@ -138,11 +138,8 @@ const Login = () => {
   return (
     <div className="relative w-screen min-h-screen  bg-login-bg bg-center bg-cover overflow-x-hidden">
       <div className="absolute inset-0  bg-gradient-to-br from-black to-black opacity-50"></div>
-      <main className="relative  mb-36 ">
-        <Header />
-      </main>
 
-      <div className="form relative  top-[150px] mt-[100px] left-1/2 w-[400px]  -translate-x-[50%] -translate-y-[50%] sm:p-16 p-10 bg-black rounded-lg sm:max-w-[70%] max-w-[90%] bg-opacity-70 text-white">
+      <div className="form relative top-[350px] left-1/2 w-[400px]  -translate-x-[50%] -translate-y-[50%] sm:p-16 p-10 bg-black rounded-lg sm:max-w-[70%] max-w-[90%] bg-opacity-70 text-white">
         <form
           action=""
           className="flex flex-col  gap-5  "
